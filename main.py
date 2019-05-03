@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup as parser
 from urllib.request import urlopen as request
 from flask import Flask
 import json
-import sys
 
 app = Flask(__name__)
 
