@@ -86,7 +86,7 @@ def root():
     return "Hello~ Welcome to Panda Projects :D"
 
 
-@app.route('/stocksymbol/<string:stocksymbol>/basic')
+@app.route('/stocksymbol/<string:stocksymbol>')
 def stock_api(stocksymbol):
     nasdaq_html = grab_nasdaq_stock_html(stocksymbol)
     market_watch_html = grab_market_watch_stock_html(stocksymbol)
