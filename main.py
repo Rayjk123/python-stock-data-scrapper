@@ -81,6 +81,11 @@ def validate_symbol(nasdaq_html, market_watch_html):
     return True
 
 
+@app.route('/')
+def root():
+    return "Hello~ Welcome to Panda Projects :D"
+
+
 @app.route('/stocksymbol/<string:stocksymbol>/basic')
 def stock_api(stocksymbol):
     nasdaq_html = grab_nasdaq_stock_html(stocksymbol)
