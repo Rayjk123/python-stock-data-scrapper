@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup as parser
 import json
+from stock_web_scrapper.util.key_dictionary import key_dict as dict
+import unicodedata
 
 
 def parse_basic_stock_info(stock_html):
@@ -27,20 +29,29 @@ def parse_key_stock_info(stock_html):
     return handle_each_stock_row(key_stock_rows)
 
 
+def insert_to_dict(dict, key, value):
+    value = unicodedata.normalize("NFKD", value)
+    separator = " / "
+
+    if separator in key and separator in value:
+        keys = key.split(separator, 1)
+        values = value.split(separator, 1)
+
+        dict[keys[0]] = "".join(values[0].split())
+        dict[keys[1]] = "".join(values[0].split())
+    else:
+        dict[key] = "".join(value.split())
+
+
 def handle_each_stock_row(key_stock_rows):
     stock_data_dict = {}
 
     for row in key_stock_rows:
         table_cells = row.find_all(class_="table-cell")
-        # print(table_cells)
 
         for data in table_cells[0].contents:
-            l = table_cells[1].string.strip()
-            print(l)
-            print("".join(l.split()))
-
-            if data.string.strip():
-                stock_data_dict[data.string] = table_cells[1].string.strip()
+            if data.string in dict:
+                insert_to_dict(stock_data_dict, dict[data.string], table_cells[1].string.strip())
 
     return stock_data_dict
 
@@ -61,4 +72,3 @@ def validate_symbol(nasdaq_html, market_watch_html):
         return False
 
     return True
-

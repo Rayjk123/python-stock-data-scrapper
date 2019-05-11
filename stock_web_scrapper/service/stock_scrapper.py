@@ -2,6 +2,7 @@ import stock_web_scrapper.util.data_grabber as grabber
 import stock_web_scrapper.util.parser as parser
 import stock_web_scrapper.util.response_formatter as response
 import json
+import sys
 
 
 def stock_api_response(stock_symbol):
@@ -9,7 +10,7 @@ def stock_api_response(stock_symbol):
     market_watch_html = grabber.grab_market_watch_stock_html(stock_symbol)
 
     if not parser.validate_symbol(nasdaq_html, market_watch_html):
-        return "Invalid Stock Symbol was passed"
+        return response.not_found_response("Invalid Stock Symbol was passed")
 
     key_stock_info = parser.parse_key_stock_info(nasdaq_html)
     basic_stock_info = parser.parse_basic_stock_info(market_watch_html)
